@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_calendar_scheduler/const/colors.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class Calendar extends StatefulWidget {
-  const Calendar({super.key});
+class Calendar extends StatelessWidget {
+  const Calendar({
+    super.key,
+    this.selectedDay,
+    required this.focusedDay,
+    required this.onDaySelected,
+  });
 
-  @override
-  State<Calendar> createState() => _CalendarState();
-}
-
-class _CalendarState extends State<Calendar> {
-  DateTime? selectedDay;
-  DateTime focusedDay = DateTime.now();
+  final DateTime? selectedDay;
+  final DateTime focusedDay;
+  final OnDaySelected onDaySelected;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +25,7 @@ class _CalendarState extends State<Calendar> {
       fontWeight: FontWeight.w700,
     );
     return TableCalendar(
+      daysOfWeekHeight: 20,
       locale: 'ko_KR',
       focusedDay: focusedDay,
       firstDay: DateTime(1800),
@@ -57,13 +59,7 @@ class _CalendarState extends State<Calendar> {
           color: primaryColor,
         ),
       ),
-      onDaySelected: (selectedDay, focusedDay) {
-        print(selectedDay);
-        setState(() {
-          this.selectedDay = selectedDay;
-          this.focusedDay = selectedDay;
-        });
-      },
+      onDaySelected: onDaySelected,
       selectedDayPredicate: (day) {
         if (selectedDay == null) {
           return false;
